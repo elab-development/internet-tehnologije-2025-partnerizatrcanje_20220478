@@ -12,6 +12,10 @@ class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, HasApiTokens;
+    const RANK_BEGGINNER = 'Beginner';
+    const RANK_INTERMEDIATE = 'Intermediate';
+    const RANK_ADVANCED = 'Advanced';
+    const RANK_PRO = 'Pro';
 
     /**
      * The attributes that are mass assignable.
