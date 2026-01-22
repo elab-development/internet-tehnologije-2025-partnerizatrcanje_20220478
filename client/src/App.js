@@ -12,6 +12,7 @@ import Administracija from "./stranice/Administracija";
 import Trke from "./stranice/Trke";
 import {Container} from "react-bootstrap";
 import Footer from "./komponente/Footer";
+import {Bounce, ToastContainer} from "react-toastify";
 
 function App() {
 
@@ -31,6 +32,19 @@ function App() {
                 </Routes>
             </BrowserRouter>
         </Container>
+        <ToastContainer
+            position="bottom-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick={false}
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="dark"
+            transition={Bounce}
+        />
         <Footer />
     </>
   );
