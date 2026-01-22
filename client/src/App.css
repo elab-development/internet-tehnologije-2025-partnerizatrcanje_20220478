@@ -34,3 +34,7 @@ footer {
     color: #fff;
     font-weight: bold;
 }
+
+.leaflet-container {
+    height: 400px;
+}
