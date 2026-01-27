@@ -24,6 +24,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/trke/{id}/ucesca', [App\Http\Controllers\TrkaController::class, 'ucesca']);
     Route::get('/ucesca', [App\Http\Controllers\UcescaController::class, 'index']);
     Route::get('/users/{userId}/ucesca', [App\Http\Controllers\UcescaController::class, 'pretragaPoKorisniku']);
+    Route::get('/trke/{trkaId}/ucesca', [App\Http\Controllers\UcescaController::class, 'pretragaPoTrci']);
     Route::post('/ucesca', [App\Http\Controllers\UcescaController::class, 'store']);
     Route::delete('/ucesca/{id}', [App\Http\Controllers\UcescaController::class, 'destroy']);
     Route::get('/postovi', [App\Http\Controllers\PostController::class, 'index']);
