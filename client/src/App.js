@@ -27,7 +27,7 @@ function App() {
                     <Route element={<ONama />} path="/o-nama" />
                     <Route element={<MojaUcesca />} path="/moja-ucesca" />
                     <Route element={<Lokacije />} path="/lokacije" />
-                    <Route element={<Administracija />} path="/administracija" />
+                    <Route element={<Administracija />} path="/admin" />
                     <Route element={<Trke/>} path="/trke" />
                 </Routes>
             </BrowserRouter>

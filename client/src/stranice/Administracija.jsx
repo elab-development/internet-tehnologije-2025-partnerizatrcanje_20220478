@@ -1,9 +1,10 @@
 import React from 'react';
+import GlavniNaslov from "../komponente/GlavniNaslov";
 
 const Administracija = () => {
     return (
         <div>
-            Administracija stranica
+            <GlavniNaslov naslov="Administracija - Work in Progress" />
         </div>
     );
 };
