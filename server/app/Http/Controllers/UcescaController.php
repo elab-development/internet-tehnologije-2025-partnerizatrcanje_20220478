@@ -72,4 +72,10 @@ class UcescaController extends OdgovorController
         $ucesca = Ucesce::where('user_id', $userId)->with(['trka', 'trkac'])->get();
         return $this->uspesno(UcesceResource::collection($ucesca), "Uspesno ucitana ucesca za korisnika");
     }
+
+    public function pretragaPoTrci($trkaId)
+    {
+        $ucesca = Ucesce::where('trka_id', $trkaId)->with(['trka', 'trkac'])->get();
+        return $this->uspesno(UcesceResource::collection($ucesca), "Uspesno ucitana ucesca za trku");
+    }
 }
