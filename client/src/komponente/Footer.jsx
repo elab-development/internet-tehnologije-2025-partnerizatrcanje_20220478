@@ -6,7 +6,7 @@ const Footer = () => {
     return (
         <>
             <footer>
-                <p> <FaDollarSign />{year}  By Zla Barbika and friends. Sva prava zadržana.</p>
+                <p> <FaHeart /> {year} Sva prava zadržana.</p>
             </footer>
         </>
     );
