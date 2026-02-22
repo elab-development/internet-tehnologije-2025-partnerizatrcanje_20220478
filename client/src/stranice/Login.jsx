@@ -40,6 +40,13 @@ const Login = () => {
     }
 
     const register = () => {
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+        if (!emailPattern.test(formData.email)) {
+            toast.error("Unesite validnu email adresu.");
+            return;
+        }
+
         server.post('/register', {
             name: formData.name,
             email: formData.email,
