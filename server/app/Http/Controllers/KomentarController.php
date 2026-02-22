@@ -15,10 +15,10 @@ class KomentarController extends OdgovorController
     public function store(Request $request)
     {
         $validator = \Illuminate\Support\Facades\Validator::make($request->all(), [
-            'post_id' => 'required|numeric|exists:posts,id',
+            'post_id' => 'required|numeric|exists:postovi,id',
             'user_id' => 'required|numeric|exists:users,id',
             'komentar' => 'required|string',
-            'ocena' => 'required|numeric|min:1|max:5',
+            'ocena' => 'required|numeric|min:0|max:5',
             'datum_komentara' => 'required|date',
         ]);
 
@@ -38,5 +38,11 @@ class KomentarController extends OdgovorController
         }
         $komentar->delete();
         return $this->uspesno([], "Komentar uspesno obrisan");
+    }
+
+    public function pretraziPoPostu($postId)
+    {
+        $komentari = \App\Models\Komentar::where('post_id', $postId)->with(['post', 'user'])->orderBy('datum_komentara', 'desc')->get();
+        return $this->uspesno(\App\Http\Resources\KomentarResource::collection($komentari), "Uspesno ucitani komentari za post");
     }
 }

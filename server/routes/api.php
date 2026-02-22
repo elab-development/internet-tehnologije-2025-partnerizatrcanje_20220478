@@ -27,12 +27,15 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/trke/{trkaId}/ucesca', [App\Http\Controllers\UcescaController::class, 'pretragaPoTrci']);
     Route::post('/ucesca', [App\Http\Controllers\UcescaController::class, 'store']);
     Route::delete('/ucesca/{id}', [App\Http\Controllers\UcescaController::class, 'destroy']);
-    Route::get('/postovi', [App\Http\Controllers\PostController::class, 'index']);
     Route::get('/postovi/{id}', [App\Http\Controllers\PostController::class, 'show']);
     Route::post('/postovi', [App\Http\Controllers\PostController::class, 'store']);
     Route::delete('/postovi/{id}', [App\Http\Controllers\PostController::class, 'destroy']);
     Route::resource('/komentari', App\Http\Controllers\KomentarController::class)->only(['index', 'store', 'destroy']);
 
     Route::get('/ucesca/paginacija', [App\Http\Controllers\UcescaController::class, 'paginacija']);
+
+    Route::get('/postovi', [App\Http\Controllers\PostController::class, 'index']);
+    Route::get('/ucesca/{id}', [App\Http\Controllers\UcescaController::class, 'show']);
+    Route::get('/komentari/{postId}', [App\Http\Controllers\KomentarController::class, 'pretraziPoPostu']);
 
 });
