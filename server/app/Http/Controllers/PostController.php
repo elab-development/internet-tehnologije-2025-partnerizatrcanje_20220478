@@ -30,7 +30,13 @@ class PostController extends OdgovorController
     )]
     public function index()
     {
-        $postovi = Post::all()->load(['ucesce', 'komentari']);
+        $postovi = Post::all()->load(['ucesce', 'komentari'])->sortBy(
+            function ($post) {
+                return $post->datum_objave;
+            },
+            SORT_REGULAR,
+            true
+        );
         return $this->uspesno(PostResource::collection($postovi), "Uspesno ucitani postovi");
     }
 

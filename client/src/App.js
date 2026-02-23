@@ -13,6 +13,7 @@ import Trke from "./stranice/Trke";
 import {Container} from "react-bootstrap";
 import Footer from "./komponente/Footer";
 import {Bounce, ToastContainer} from "react-toastify";
+import Postovi from "./stranice/Postovi";
 
 function App() {
 
@@ -27,6 +28,7 @@ function App() {
                     <Route element={<ONama />} path="/o-nama" />
                     <Route element={<MojaUcesca />} path="/moja-ucesca" />
                     <Route element={<Lokacije />} path="/lokacije" />
+                    <Route element={<Postovi />} path="/postovi" />
                     <Route element={<Administracija />} path="/admin" />
                     <Route element={<Trke/>} path="/trke" />
                 </Routes>
