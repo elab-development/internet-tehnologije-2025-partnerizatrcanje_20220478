@@ -1,0 +1,1392 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "RunAPP API",
+        "description": "API dokumentacija za RunAPP aplikaciju",
+        "contact": {
+            "name": "API Support",
+            "url": "https://example.com/support",
+            "email": "support@example.com"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000",
+            "description": "Local development server"
+        }
+    ],
+    "paths": {
+        "/api/komentari": {
+            "get": {
+                "tags": [
+                    "Komentar"
+                ],
+                "summary": "Get lista komentara",
+                "description": "Vraca listu svih komentara",
+                "operationId": "b7b7759c768914f744d5d1bf38f44beb",
+                "responses": {
+                    "200": {
+                        "description": "Uspesno vraceni komentari",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Komentar"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Neautorizovan pristup"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Komentar"
+                ],
+                "summary": "Kreiranje komentara",
+                "description": "Kreira novi komentar",
+                "operationId": "3244afd297ffdea91f6859db63807a8d",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "post_id",
+                                    "user_id",
+                                    "komentar",
+                                    "ocena",
+                                    "datum_komentara"
+                                ],
+                                "properties": {
+                                    "post_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "user_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "komentar": {
+                                        "type": "string",
+                                        "example": "Ovo je komentar"
+                                    },
+                                    "ocena": {
+                                        "type": "number",
+                                        "maximum": 5,
+                                        "minimum": 0,
+                                        "example": 4
+                                    },
+                                    "datum_komentara": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2026-02-23"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Komentar uspesno kreiran",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Komentar"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validaciona greska"
+                    },
+                    "401": {
+                        "description": "Neautorizovan pristup"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/komentari/{id}": {
+            "delete": {
+                "tags": [
+                    "Komentar"
+                ],
+                "summary": "Brisanje komentara",
+                "description": "Brise komentar",
+                "operationId": "2c2cc8d59e5484cf0274c38919a518ef",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID komentara",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Komentar uspesno obrisan"
+                    },
+                    "404": {
+                        "description": "Komentar nije pronadjen"
+                    },
+                    "401": {
+                        "description": "Neautorizovan pristup"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/komentari/{postId}": {
+            "get": {
+                "tags": [
+                    "Komentar"
+                ],
+                "summary": "Get komentari po postu",
+                "description": "Vraca sve komentare za odredjeni post",
+                "operationId": "c3c3bd9a7af6bda7745355ecb0319d25",
+                "parameters": [
+                    {
+                        "name": "postId",
+                        "in": "path",
+                        "description": "ID posta",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Uspesno vraceni komentari za post",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Komentar"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Neautorizovan pristup"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Autentifikacija"
+                ],
+                "summary": "Prijava korisnika",
+                "description": "Prijava korisnika sa email i lozinkom",
+                "operationId": "c5e838284c7f343f0e5e5fd589161c96",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "korisnik@email.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "lozinka123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Prijava uspesna",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "token": {
+                                            "type": "string"
+                                        },
+                                        "user": {
+                                            "$ref": "#/components/schemas/User"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validaciona greska"
+                    },
+                    "401": {
+                        "description": "Neispravni kredencijali"
+                    }
+                }
+            }
+        },
+        "/api/register": {
+            "post": {
+                "tags": [
+                    "Autentifikacija"
+                ],
+                "summary": "Registracija korisnika",
+                "description": "Registracija novog korisnika",
+                "operationId": "a39949df013c1eb78ff8bd8f481d408a",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password",
+                                    "name"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "novi@email.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "lozinka123"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Ime Prezime"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Registracija uspesna",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validaciona greska"
+                    }
+                }
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Autentifikacija"
+                ],
+                "summary": "Odjava korisnika",
+                "description": "Odjava korisnika i brisanje tokena",
+                "operationId": "399284ae5e84627c95a691127018a412",
+                "responses": {
+                    "200": {
+                        "description": "Uspesno odjavljeni"
+                    },
+                    "401": {
+                        "description": "Neautorizovan pristup"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/lokacije": {
+            "get": {
+                "tags": [
+                    "Lokacija"
+                ],
+                "summary": "Get lista lokacija",
+                "description": "Vraca listu svih lokacija",
+                "operationId": "565cbddac80d93794cc04ec963054097",
+                "responses": {
+                    "200": {
+                        "description": "Uspesno vracene lokacije",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Lokacija"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/postovi": {
+            "get": {
+                "tags": [
+                    "Post"
+                ],
+                "summary": "Get lista postova",
+                "description": "Vraca listu svih postova",
+                "operationId": "34b9c64ae67dd5461ee598059079e6ee",
+                "responses": {
+                    "200": {
+                        "description": "Uspesno vraceni postovi",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Post"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Neautorizovan pristup"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Post"
+                ],
+                "summary": "Kreiranje posta",
+                "description": "Kreira novi post",
+                "operationId": "268fff83f55a320173f6d9ebf7e08ca1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "ucesce_id",
+                                    "sadrzaj",
+                                    "datum_objave"
+                                ],
+                                "properties": {
+                                    "ucesce_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "sadrzaj": {
+                                        "type": "string",
+                                        "example": "Ovo je sadrzaj posta"
+                                    },
+                                    "datum_objave": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2026-02-23"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Post uspesno kreiran",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Post"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validaciona greska"
+                    },
+                    "401": {
+                        "description": "Neautorizovan pristup"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/postovi/{id}": {
+            "get": {
+                "tags": [
+                    "Post"
+                ],
+                "summary": "Get post po ID-u",
+                "description": "Vraca detalje jednog posta",
+                "operationId": "9889365d3a5757cf914b3073ba7d7a5f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID posta",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Uspesno vracen post",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Post"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Post nije pronadjen"
+                    },
+                    "401": {
+                        "description": "Neautorizovan pristup"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Post"
+                ],
+                "summary": "Brisanje posta",
+                "description": "Brise post",
+                "operationId": "48f550859a6eab61bfdca5789032a1e4",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID posta",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Post uspesno obrisan"
+                    },
+                    "404": {
+                        "description": "Post nije pronadjen"
+                    },
+                    "401": {
+                        "description": "Neautorizovan pristup"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/trke": {
+            "get": {
+                "tags": [
+                    "Trka"
+                ],
+                "summary": "Get lista trka",
+                "description": "Vraca listu svih trka",
+                "operationId": "3de17ccb07a34e1b96acf45eb5a357ee",
+                "responses": {
+                    "200": {
+                        "description": "Uspesno vracene trke",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Trka"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Trka"
+                ],
+                "summary": "Kreiranje trke",
+                "description": "Kreira novu trku",
+                "operationId": "20d2c39e36cbc5399fe6b9552ce2d533",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "naziv",
+                                    "datum",
+                                    "lokacija_id",
+                                    "godina",
+                                    "organizator",
+                                    "kilometraza"
+                                ],
+                                "properties": {
+                                    "naziv": {
+                                        "type": "string",
+                                        "example": "Beogradski maraton"
+                                    },
+                                    "datum": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2026-05-15"
+                                    },
+                                    "lokacija_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "godina": {
+                                        "type": "integer",
+                                        "example": 2026
+                                    },
+                                    "organizator": {
+                                        "type": "string",
+                                        "example": "Atletski savez"
+                                    },
+                                    "kilometraza": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 42.195
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Trka uspesno kreirana",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Trka"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validaciona greska"
+                    },
+                    "401": {
+                        "description": "Neautorizovan pristup"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/trke/buduce": {
+            "get": {
+                "tags": [
+                    "Trka"
+                ],
+                "summary": "Get lista buducih trka",
+                "description": "Vraca listu buducih trka",
+                "operationId": "bdb4eb5840efb50ebf48a500c22b61f2",
+                "responses": {
+                    "200": {
+                        "description": "Uspesno vracene buduce trke",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Trka"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/trke/{id}": {
+            "get": {
+                "tags": [
+                    "Trka"
+                ],
+                "summary": "Get trka po ID-u",
+                "description": "Vraca detalje jedne trke",
+                "operationId": "2944fb2ae9886c7515fa6291b188abf0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID trke",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Uspesno vracena trka",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Trka"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Trka nije pronadjena"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Trka"
+                ],
+                "summary": "Brisanje trke",
+                "description": "Brise trku (samo admin)",
+                "operationId": "385f5bef7b00194aac3e973ad2dae177",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID trke",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Trka uspesno obrisana"
+                    },
+                    "404": {
+                        "description": "Trka nije pronadjena"
+                    },
+                    "401": {
+                        "description": "Neautorizovan pristup"
+                    },
+                    "403": {
+                        "description": "Zabranjen pristup"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/trke/{id}/ucesca": {
+            "get": {
+                "tags": [
+                    "Trka"
+                ],
+                "summary": "Get ucesca za trku",
+                "description": "Vraca sva ucesca za odredjenu trku",
+                "operationId": "ed76e2fe5210f9dc0acb3eb4c848ecd8",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID trke",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Uspesno vracena ucesca za trku",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Ucesce"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Trka nije pronadjena"
+                    },
+                    "401": {
+                        "description": "Neautorizovan pristup"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/ucesca": {
+            "get": {
+                "tags": [
+                    "Ucesce"
+                ],
+                "summary": "Get lista ucesca",
+                "description": "Vraca listu svih ucesca",
+                "operationId": "ba530b5157885f88ea1400d369c1cf64",
+                "responses": {
+                    "200": {
+                        "description": "Uspesno vracena ucesca",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Ucesce"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Neautorizovan pristup"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Ucesce"
+                ],
+                "summary": "Kreiranje ucesca",
+                "description": "Kreira novo ucesce",
+                "operationId": "c5b32c729ba3060bdd9502eb276b6ceb",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "user_id",
+                                    "trka_id",
+                                    "vreme"
+                                ],
+                                "properties": {
+                                    "user_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "trka_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "vreme": {
+                                        "type": "number",
+                                        "example": 3600
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ucesce uspesno kreirano",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Ucesce"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validaciona greska"
+                    },
+                    "401": {
+                        "description": "Neautorizovan pristup"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/ucesca/{id}": {
+            "get": {
+                "tags": [
+                    "Ucesce"
+                ],
+                "summary": "Get ucesce po ID-u",
+                "description": "Vraca detalje jednog ucesca",
+                "operationId": "da3487a88ff20bab6fe62494db96dfb7",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID ucesca",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Uspesno vraceno ucesce",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Ucesce"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Ucesce nije pronadjeno"
+                    },
+                    "401": {
+                        "description": "Neautorizovan pristup"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Ucesce"
+                ],
+                "summary": "Brisanje ucesca",
+                "description": "Brise ucesce",
+                "operationId": "5cd66c5bb5ea5516e7debada7cdae45f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID ucesca",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ucesce uspesno obrisano"
+                    },
+                    "404": {
+                        "description": "Ucesce nije pronadjeno"
+                    },
+                    "401": {
+                        "description": "Neautorizovan pristup"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/ucesca/paginacija": {
+            "get": {
+                "tags": [
+                    "Ucesce"
+                ],
+                "summary": "Get ucesca sa paginacijom",
+                "description": "Vraca ucesca sa paginacijom",
+                "operationId": "3355d268b8e5dbcc573b0946d57477c1",
+                "parameters": [
+                    {
+                        "name": "poStranici",
+                        "in": "query",
+                        "description": "Broj ucesca po stranici",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 10
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Uspesno vracena ucesca sa paginacijom"
+                    },
+                    "401": {
+                        "description": "Neautorizovan pristup"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/users/{userId}/ucesca": {
+            "get": {
+                "tags": [
+                    "Ucesce"
+                ],
+                "summary": "Get ucesca po korisniku",
+                "description": "Vraca sva ucesca za odredjenog korisnika",
+                "operationId": "ccc4f9e2f65ecbeb79f969b92e021c39",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "description": "ID korisnika",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Uspesno vracena ucesca za korisnika",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Ucesce"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Neautorizovan pristup"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/trke/{trkaId}/ucesca": {
+            "get": {
+                "tags": [
+                    "Ucesce"
+                ],
+                "summary": "Get ucesca po trci",
+                "description": "Vraca sva ucesca za odredjenu trku",
+                "operationId": "c9174f857551e4f6ad61e0a4648f296b",
+                "parameters": [
+                    {
+                        "name": "trkaId",
+                        "in": "path",
+                        "description": "ID trke",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Uspesno vracena ucesca za trku",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Ucesce"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Neautorizovan pristup"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Komentar": {
+                "title": "Komentar",
+                "description": "Komentar model",
+                "required": [
+                    "id",
+                    "post_id",
+                    "user_id",
+                    "komentar",
+                    "ocena",
+                    "datum_komentara"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "post_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "user_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "komentar": {
+                        "type": "string",
+                        "example": "Ovo je komentar"
+                    },
+                    "ocena": {
+                        "type": "integer",
+                        "example": 5
+                    },
+                    "datum_komentara": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00Z"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00Z"
+                    }
+                },
+                "type": "object"
+            },
+            "Lokacija": {
+                "title": "Lokacija",
+                "description": "Lokacija model",
+                "required": [
+                    "id",
+                    "naziv",
+                    "long",
+                    "lat"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "naziv": {
+                        "type": "string",
+                        "example": "Beograd"
+                    },
+                    "long": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 20.123456
+                    },
+                    "lat": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 44.123456
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00Z"
+                    }
+                },
+                "type": "object"
+            },
+            "Post": {
+                "title": "Post",
+                "description": "Post model",
+                "required": [
+                    "id",
+                    "ucesce_id",
+                    "sadrzaj",
+                    "datum_objave"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "ucesce_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "sadrzaj": {
+                        "type": "string",
+                        "example": "Ovo je sadrzaj posta"
+                    },
+                    "datum_objave": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00Z"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00Z"
+                    }
+                },
+                "type": "object"
+            },
+            "Trka": {
+                "title": "Trka",
+                "description": "Trka model",
+                "required": [
+                    "id",
+                    "naziv",
+                    "godina",
+                    "organizator",
+                    "kilometraza",
+                    "datum",
+                    "lokacija_id"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "naziv": {
+                        "type": "string",
+                        "example": "Maraton Beograd"
+                    },
+                    "godina": {
+                        "type": "integer",
+                        "example": 2024
+                    },
+                    "organizator": {
+                        "type": "string",
+                        "example": "Atletski savez Srbije"
+                    },
+                    "kilometraza": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 42.195
+                    },
+                    "datum": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-10-01T09:00:00Z"
+                    },
+                    "lokacija_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00Z"
+                    }
+                },
+                "type": "object"
+            },
+            "Ucesce": {
+                "title": "Ucesce",
+                "description": "Ucesce model",
+                "required": [
+                    "id",
+                    "trka_id",
+                    "user_id",
+                    "vreme"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "trka_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "user_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "vreme": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00Z"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00Z"
+                    }
+                },
+                "type": "object"
+            },
+            "User": {
+                "title": "User",
+                "description": "User model",
+                "required": [
+                    "id",
+                    "name",
+                    "email",
+                    "tipKorisnika",
+                    "rank"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "John Doe"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "email@gmail.com"
+                    },
+                    "tipKorisnika": {
+                        "type": "string",
+                        "example": "Trkac"
+                    },
+                    "rank": {
+                        "type": "string",
+                        "example": "Beginner"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00Z"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Komentar",
+            "description": "Komentar"
+        },
+        {
+            "name": "Autentifikacija",
+            "description": "Autentifikacija"
+        },
+        {
+            "name": "Lokacija",
+            "description": "Lokacija"
+        },
+        {
+            "name": "Post",
+            "description": "Post"
+        },
+        {
+            "name": "Trka",
+            "description": "Trka"
+        },
+        {
+            "name": "Ucesce",
+            "description": "Ucesce"
+        }
+    ]
+}
