@@ -31,6 +31,7 @@ const Navigacija = () => {
                             {
                                 token && (
                                     <>
+                                        <Nav.Link href="/postovi">Postovi</Nav.Link>
                                         <Nav.Link href="/moja-ucesca">Moja ucesca</Nav.Link>
                                     </>
                                 )
